@@ -40,4 +40,12 @@ public class Crime {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
+
+    public boolean RequiresPolice() {
+        return mRequiresPolice;
+    }
+
+    public void setRequiresPolice(boolean requiresPolice) {
+        mRequiresPolice = requiresPolice;
+    }
 }

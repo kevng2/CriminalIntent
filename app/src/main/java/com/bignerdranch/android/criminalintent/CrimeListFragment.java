@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -40,8 +41,9 @@ public class CrimeListFragment extends Fragment {
         private TextView mDateTextView;
         private Crime mCrime;
 
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
+        public CrimeHolder(LayoutInflater inflater, ViewGroup parent, int resource) {
+            super(inflater.inflate(resource, parent, false));
+
             itemView.setOnClickListener(this);
 
             mTitleTextView = itemView.findViewById(R.id.crime_title);
@@ -63,6 +65,8 @@ public class CrimeListFragment extends Fragment {
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
         private List<Crime> mCrimes;
+        private int mLayoutId;
+        private int position = 0;
 
         public CrimeAdapter(List<Crime> crimes) {
             mCrimes = crimes;
@@ -72,7 +76,12 @@ public class CrimeListFragment extends Fragment {
         @Override
         public CrimeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new CrimeHolder(layoutInflater, parent);
+            if(!mCrimes.get(position).RequiresPolice())
+                mLayoutId = R.layout.list_item_crime;
+            else
+                mLayoutId = R.layout.list_item_requires_police;
+            position++;
+            return new CrimeHolder(layoutInflater, parent, mLayoutId);
         }
 
         @Override
@@ -83,6 +92,14 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if(mCrimes.get(position).RequiresPolice()) {
+                return 0;
+            }
+            return 1;
         }
     }
 }
