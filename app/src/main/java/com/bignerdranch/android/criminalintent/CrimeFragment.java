@@ -11,14 +11,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CrimeFragment extends Fragment {
-    private class CrimeHolder extends RecyclerView.ViewHolder {
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
-        }
-    }
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
