@@ -1,12 +1,10 @@
 package com.bignerdranch.android.criminalintent;
-
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class SingleFragmentActivity extends FragmentActivity {
     protected abstract Fragment createFragment();
 
     @Override

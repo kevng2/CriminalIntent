@@ -1,9 +1,7 @@
 package com.bignerdranch.android.criminalintent;
+import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.fragment.app.Fragment;
-
 import java.util.UUID;
 
 public class CrimeActivity extends SingleFragmentActivity {

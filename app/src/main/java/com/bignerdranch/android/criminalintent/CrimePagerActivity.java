@@ -6,14 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import java.util.List;
 
 public class CrimePagerActivity extends AppCompatActivity {
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     private List<Crime> mCrimes;
 
     @Override
@@ -25,5 +23,17 @@ public class CrimePagerActivity extends AppCompatActivity {
         mCrimes = CrimeLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
+        mViewPager.setAdapter(new FragmentStateAdapter(fragmentManager, getLifecycle()) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                return CrimeFragment.newInstance(mCrimes.get(position).getId());
+            }
+
+            @Override
+            public int getItemCount() {
+                return mCrimes.size();
+            }
+        });
     }
 }
