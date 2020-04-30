@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
+    private static final String TAG = "CrimeListFragment";
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private int mPosition;

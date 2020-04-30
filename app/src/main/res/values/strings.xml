@@ -11,4 +11,5 @@
     <string name="last">Last Crime</string>
     <string name="date_picker_title">Date of crime:</string>
     <string name="todo">TODO</string>
+    <string name="ok_button">OK</string>
 </resources>
