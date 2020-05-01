@@ -59,6 +59,7 @@ public class CrimeFragment extends Fragment {
 
         mTitleField = v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
+
         // wires up the EditText widget
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
