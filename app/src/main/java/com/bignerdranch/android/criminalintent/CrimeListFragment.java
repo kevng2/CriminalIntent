@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -160,6 +161,7 @@ public class CrimeListFragment extends Fragment {
                 Crime crime = new Crime();
                 CrimeLab crimeLab = CrimeLab.get(getActivity());
                 crimeLab.addCrime(crime);
+                Log.d(TAG, "onOptionsItemSelected: Added Crime");
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
                 startActivity(intent);
                 return true;
