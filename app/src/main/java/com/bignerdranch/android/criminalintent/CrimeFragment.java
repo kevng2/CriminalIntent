@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,7 +37,6 @@ public class CrimeFragment extends Fragment {
 
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(idArgs);
-        Log.d(TAG, "newInstance: Running");
         return fragment;
     }
 
@@ -63,7 +61,6 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
-        Log.d(TAG, "onCreateView: Running");
         mTitleField = v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
 
@@ -135,6 +132,8 @@ public class CrimeFragment extends Fragment {
                 return;
             }
             mCrime.setDate((Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE));
+            Log.d(TAG, "onActivityResult: " + mCrime.getDate());
+            CrimeLab.get(getActivity()).updateCrime(mCrime);
             updateDate();
         }
         else if(requestCode == REQUEST_TIME) {

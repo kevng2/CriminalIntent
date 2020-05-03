@@ -7,8 +7,6 @@ import android.util.Log;
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +35,6 @@ public class CrimeLab {
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
         CrimeCursorWrapper cursor = queryCrimes(null, null);
-
         try {
             cursor.moveToFirst();
             while(!cursor.isAfterLast()) {
@@ -47,6 +44,10 @@ public class CrimeLab {
         }
         finally {
             cursor.close();
+        }
+
+        for(Crime x : crimes) {
+            Log.d(TAG, "getCrimes: " + x.getDate());
         }
         return crimes;
     }

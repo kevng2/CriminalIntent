@@ -27,7 +27,6 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
-    private int mPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,9 @@ public class CrimeListFragment extends Fragment {
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
+        for(Crime x : crimes) {
+            Log.d(TAG, "updateUI: " + x.getDate());
+        }
         if(mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
@@ -92,13 +94,11 @@ public class CrimeListFragment extends Fragment {
             Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             Log.d(TAG, "onClick: running");
             startActivity(intent);
-            mPosition = mCrime.getPosition();
         }
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
         private List<Crime> mCrimes;
-        private int position = 0;
 
         public CrimeAdapter(List<Crime> crimes) {
             mCrimes = crimes;
@@ -108,7 +108,6 @@ public class CrimeListFragment extends Fragment {
         @Override
         public CrimeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            position++;
             return new CrimeHolder(layoutInflater, parent);
         }
 

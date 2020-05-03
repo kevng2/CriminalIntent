@@ -45,12 +45,4 @@ public class Crime {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
-
-    public void setPosition(int position) {
-        mPosition = position;
-    }
-
-    public int getPosition() {
-        return mPosition;
-    }
 }
