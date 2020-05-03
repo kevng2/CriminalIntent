@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent.database;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.util.Log;
 
 import com.bignerdranch.android.criminalintent.Crime;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class CrimeCursorWrapper extends CursorWrapper {
-
+    private static final String TAG = "CrimeCursorWrapper";
     /**
      * Creates a cursor wrapper.
      *
@@ -31,6 +32,7 @@ public class CrimeCursorWrapper extends CursorWrapper {
         crime.setDate(new Date(date));
         crime.setSolved(isSolved != 0);
 
+        Log.d(TAG, "getCrime: " + crime.getId());
         return crime;
     }
 }

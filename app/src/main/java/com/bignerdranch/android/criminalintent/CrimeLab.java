@@ -4,14 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
-import com.bignerdranch.android.criminalintent.database.CrimeDbSchema;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +31,7 @@ public class CrimeLab {
     // private constructor
     private CrimeLab(Context context) {
         mContext = context.getApplicationContext();
-        mDatabase = new CrimeBaseHelper(context).getWritableDatabase();
+        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
     }
 
     public List<Crime> getCrimes() {
@@ -59,18 +57,16 @@ public class CrimeLab {
                 CrimeTable.Cols.UUID + " = ?",
                 new String[] { id.toString() }
                 );
-        Log.d(TAG, "getCrime: After Cursor");
         try {
             if(cursor.getCount() == 0) {
                 Log.d(TAG, "getCrime: It is null");
-                return null;
+                return new Crime();
             }
             cursor.moveToFirst();
             Log.d(TAG, "getCrime: After moveToFirst()");
             return cursor.getCrime();
         }
         finally {
-            Log.d(TAG, "getCrime: Finally");
             cursor.close();
         }
     }
@@ -78,7 +74,8 @@ public class CrimeLab {
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
-        mDatabase.update(CrimeTable.NAME, values, CrimeTable.Cols.UUID + " = ?",
+        mDatabase.update(CrimeTable.NAME, values,
+                CrimeTable.Cols.UUID + " = ?",
                 new String[] {uuidString});
     }
 

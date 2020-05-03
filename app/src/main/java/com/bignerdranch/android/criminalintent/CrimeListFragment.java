@@ -53,12 +53,14 @@ public class CrimeListFragment extends Fragment {
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void updateUI(int position) {
-        mAdapter.notifyItemChanged(position);
+        if(mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            mAdapter.setCrimes(crimes);
+            mAdapter.notifyDataSetChanged();
+        }
         updateSubtitle();
     }
 
@@ -120,19 +122,15 @@ public class CrimeListFragment extends Fragment {
             return mCrimes.size();
         }
 
-        @Override
-        public int getItemViewType(int position) {
-            if(mCrimes.get(position).RequiresPolice()) {
-                return 0;
-            }
-            return 1;
+        public void setCrimes(List<Crime> crimes) {
+            mCrimes = crimes;
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateUI(mPosition);
+        updateUI();
     }
 
     @Override
@@ -189,5 +187,4 @@ public class CrimeListFragment extends Fragment {
         assert activity != null;
         Objects.requireNonNull(activity.getSupportActionBar()).setSubtitle(subtitle);
     }
-
 }
