@@ -27,8 +27,6 @@ public class CrimePagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
-        Log.d(TAG, "onCreate: poop"); 
-
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
         mViewPager = findViewById(R.id.crime_view_pager);
@@ -65,6 +63,7 @@ public class CrimePagerActivity extends AppCompatActivity {
                     mFirstButton.setEnabled(true);
                     mLastButton.setEnabled(true);
                 }
+                Log.d(TAG, "createFragment: Running");
                 return CrimeFragment.newInstance(mCrimes.get(position).getId());
             }
 
@@ -75,11 +74,14 @@ public class CrimePagerActivity extends AppCompatActivity {
         });
 
         for(int i = 0; i < mCrimes.size(); i++) {
+            Log.d(TAG, "onCreate: for loop");
             if(mCrimes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
         }
+
+        Log.d(TAG, "onCreate: end of onCreate");
     }
 
     public static Intent newIntent(Context packageContext, UUID id) {

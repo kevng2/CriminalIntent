@@ -3,6 +3,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
@@ -19,6 +20,7 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
+    private static final String TAG = "CrimeLab";
 
     // returns an instance if it already doesn't exist
     public static CrimeLab get(Context context) {
@@ -52,17 +54,23 @@ public class CrimeLab {
     }
 
     public Crime getCrime(UUID id) {
-        CrimeCursorWrapper cursor = queryCrimes(CrimeTable.Cols.UUID + " ? =",
-                new String[] {id.toString()});
-
+        Log.d(TAG, "getCrime: Big Boi Hours");
+        CrimeCursorWrapper cursor = queryCrimes(
+                CrimeTable.Cols.UUID + " = ?",
+                new String[] { id.toString() }
+                );
+        Log.d(TAG, "getCrime: After Cursor");
         try {
             if(cursor.getCount() == 0) {
+                Log.d(TAG, "getCrime: It is null");
                 return null;
             }
             cursor.moveToFirst();
+            Log.d(TAG, "getCrime: After moveToFirst()");
             return cursor.getCrime();
         }
         finally {
+            Log.d(TAG, "getCrime: Finally");
             cursor.close();
         }
     }
@@ -75,8 +83,16 @@ public class CrimeLab {
     }
 
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
-        Cursor cursor = mDatabase.query(CrimeTable.NAME, null, whereClause, whereArgs,
-                null, null, null);
+        Log.d(TAG, "queryCrimes: Before cursor");
+        Cursor cursor = mDatabase.query(
+                CrimeTable.NAME,
+                null,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null);
+        Log.d(TAG, "queryCrimes: After Cursor"); 
         return new CrimeCursorWrapper(cursor);
     }
 

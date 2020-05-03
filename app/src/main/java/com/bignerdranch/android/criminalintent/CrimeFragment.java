@@ -38,6 +38,7 @@ public class CrimeFragment extends Fragment {
 
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(idArgs);
+        Log.d(TAG, "newInstance: Running");
         return fragment;
     }
 
@@ -46,6 +47,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: running boi");
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
@@ -56,7 +58,7 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
-
+        Log.d(TAG, "onCreateView: Running");
         mTitleField = v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
 
@@ -147,6 +149,4 @@ public class CrimeFragment extends Fragment {
     public void updateDate() {
         mDateButton.setText(mCrime.getDate().toString());
     }
-
-
 }
