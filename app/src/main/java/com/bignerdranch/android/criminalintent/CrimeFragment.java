@@ -1,6 +1,5 @@
 package com.bignerdranch.android.criminalintent;
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,10 +7,10 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.telecom.Call;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -25,14 +24,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -107,6 +101,7 @@ public class CrimeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
         mTitleField = v.findViewById(R.id.crime_title);
+
         mTitleField.setText(mCrime.getTitle());
 
         // wires up the EditText widget
@@ -265,7 +260,15 @@ public class CrimeFragment extends Fragment {
     }
 
     public void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        android.icu.text.DateFormat dateFormat;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dateFormat = android.icu.text.DateFormat.getDateInstance(android.icu.text.DateFormat.FULL);
+            String date = dateFormat.format(mCrime.getDate());
+            mDateButton.setText(date);
+        }
+        else {
+            mDateButton.setText(mCrime.getDate().toString());
+        }
     }
 
     private String getCrimeReport() {
