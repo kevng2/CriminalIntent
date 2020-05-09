@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:baselineAligned="false">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,12 +21,15 @@
                 android:scaleType="centerInside"
                 android:cropToPadding="true"
                 android:background="@android:color/darker_gray"
-                android:id="@+id/crime_photo"/>
+                android:id="@+id/crime_photo"
+                android:contentDescription="@string/crime_photo_no_image_description"
+                android:focusable="true"/>
             <ImageButton
                 android:id="@+id/crime_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_camera"/>
+                android:src="@android:drawable/ic_menu_camera"
+                android:contentDescription="@string/crime_photo_button_description"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -41,7 +45,8 @@
                 android:id="@+id/crime_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/crime_title_hint"/>
+                android:hint="@string/crime_title_hint"
+                android:labelFor="@+id/crime_title"/>
         </LinearLayout>
     </LinearLayout>
     <TextView
