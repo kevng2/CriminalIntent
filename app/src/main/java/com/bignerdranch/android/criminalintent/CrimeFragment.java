@@ -1,5 +1,7 @@
 package com.bignerdranch.android.criminalintent;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -9,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.telecom.Call;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -23,9 +26,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.Date;
@@ -48,7 +54,12 @@ public class CrimeFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
+    private Callbacks mCallbacks;
     private static final String TAG = "CrimeFragment";
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle idArgs = new Bundle();
@@ -57,6 +68,12 @@ public class CrimeFragment extends Fragment {
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(idArgs);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
     }
 
     // this method is public because it will need to be accessed by whatever activity is hosting
@@ -77,6 +94,12 @@ public class CrimeFragment extends Fragment {
         CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     // this method inflates the layout for the fragment's view and returns the inflated View to the
     // hosting activity
     @Override
@@ -94,6 +117,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+                updateCrime();
             }
 
             @Override
@@ -120,6 +144,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                updateCrime();
             }
         });
 
@@ -203,6 +228,7 @@ public class CrimeFragment extends Fragment {
             Log.d(TAG, "onActivityResult: " + mCrime.getDate());
             CrimeLab.get(getActivity()).updateCrime(mCrime);
             updateDate();
+            updateCrime();
         }
         else if(requestCode == REQUEST_CONTACT) {
             Uri contactURI = data.getData();
@@ -228,8 +254,14 @@ public class CrimeFragment extends Fragment {
             Uri uri = FileProvider.getUriForFile(getActivity(),
                     "com.bignerdranch.android.criminalintent.fileprovider", mPhotoFile);
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            updateCrime();
             updatePhotoView();
         }
+    }
+
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
     }
 
     public void updateDate() {

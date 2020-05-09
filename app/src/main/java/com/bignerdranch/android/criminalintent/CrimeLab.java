@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import androidx.core.content.FileProvider;
-
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
@@ -107,6 +105,11 @@ public class CrimeLab {
     public void addCrime(Crime c) {
         ContentValues values = getContentValues(c);
         mDatabase.insert(CrimeTable.NAME, null, values);
+    }
+
+    public void deleteCrime(Crime c) {
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " = ?",
+                new String[] { c.getId().toString() }) ;
     }
 
     private static ContentValues getContentValues(Crime crime) {
